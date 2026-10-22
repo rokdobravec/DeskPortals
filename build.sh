@@ -10,7 +10,8 @@ swift build -c release --arch arm64
 APP=build/DeskPortals.app
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp .build/arm64-apple-macosx/release/DeskPortals "$APP/Contents/MacOS/"
+BIN_DIR=$(swift build -c release --arch arm64 --show-bin-path)
+cp "$BIN_DIR/DeskPortals" "$APP/Contents/MacOS/"
 cp Resources/Info.plist "$APP/Contents/"
 codesign --force --sign - "$APP"
 echo "Built $APP"
