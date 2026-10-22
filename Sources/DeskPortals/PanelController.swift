@@ -45,6 +45,14 @@ final class PanelController {
         panel.close()
     }
 
+    /// PNG of the panel's current contents (debug snapshots)
+    func snapshotPNG() -> Data? {
+        guard let view = panel.contentView,
+              let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds) else { return nil }
+        view.cacheDisplay(in: view.bounds, to: rep)
+        return rep.representation(using: .png, properties: [:])
+    }
+
     private func syncFrame() {
         var updated = config
         updated.frame = panel.frame

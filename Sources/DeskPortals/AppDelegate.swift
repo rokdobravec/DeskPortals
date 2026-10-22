@@ -15,6 +15,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         AppSettings.shared.onListingOptionsChanged = { [weak self] in
             self?.controllers.forEach { $0.contents.reload() }
         }
+
+        // Debug: `DeskPortals --snapshot <dir> [seconds]` writes each panel as panel-N.png, then quits
+        let args = CommandLine.arguments
+        if let index = args.firstIndex(of: "--snapshot"), index + 1 < args.count {
+            let dir = URL(fileURLWithPath: args[index + 1], isDirectory: true)
+            let delay = index + 2 < args.count ? Double(args[index + 2]) ?? 1.5 : 1.5
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+                for (n, controller) in (self?.controllers ?? []).enumerated() {
+                    try? controller.snapshotPNG()?.write(to: dir.appendingPathComponent("panel-\(n).png"))
+                }
+                NSApp.terminate(nil)
+            }
+        }
     }
 
     // MARK: - Menu bar
