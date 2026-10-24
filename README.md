@@ -55,3 +55,7 @@ and quits.
 | `FolderContents.swift` | Folder listing and icon cache |
 | `FolderWatcher.swift` | FSEvents wrapper |
 | `PanelStore.swift` | Panel configs and app settings (UserDefaults) |
+
+## License
+
+MIT — see [LICENSE](LICENSE).
